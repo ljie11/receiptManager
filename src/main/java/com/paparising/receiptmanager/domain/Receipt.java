@@ -29,16 +29,16 @@ public class Receipt implements Serializable {
     private ReceiptCategory category;
 
     @Column(name = "created_by")
-    private Integer created_by;
+    private Integer createdBy;
 
     @Column(name = "created_date")
-    private ZonedDateTime created_date;
+    private ZonedDateTime createdDate;
 
     @Column(name = "total")
     private String total;
 
     @Column(name = "claimed_amount")
-    private Double claimed_amount;
+    private Double claimedAmount;
 
     public Long getId() {
         return id;
@@ -62,29 +62,29 @@ public class Receipt implements Serializable {
     }
 
     public Integer getCreated_by() {
-        return created_by;
+        return createdBy;
     }
 
     public Receipt created_by(Integer created_by) {
-        this.created_by = created_by;
+        this.createdBy = created_by;
         return this;
     }
 
     public void setCreated_by(Integer created_by) {
-        this.created_by = created_by;
+        this.createdBy = created_by;
     }
 
     public ZonedDateTime getCreated_date() {
-        return created_date;
+        return createdDate;
     }
 
     public Receipt created_date(ZonedDateTime created_date) {
-        this.created_date = created_date;
+        this.createdDate = created_date;
         return this;
     }
 
     public void setCreated_date(ZonedDateTime created_date) {
-        this.created_date = created_date;
+        this.createdDate = created_date;
     }
 
     public String getTotal() {
@@ -101,16 +101,16 @@ public class Receipt implements Serializable {
     }
 
     public Double getClaimed_amount() {
-        return claimed_amount;
+        return claimedAmount;
     }
 
     public Receipt claimed_amount(Double claimed_amount) {
-        this.claimed_amount = claimed_amount;
+        this.claimedAmount = claimed_amount;
         return this;
     }
 
     public void setClaimed_amount(Double claimed_amount) {
-        this.claimed_amount = claimed_amount;
+        this.claimedAmount = claimed_amount;
     }
 
     @Override
@@ -138,10 +138,10 @@ public class Receipt implements Serializable {
         return "Receipt{" +
             "id=" + id +
             ", category='" + category + "'" +
-            ", created_by='" + created_by + "'" +
-            ", created_date='" + created_date + "'" +
+            ", created_by='" + createdBy + "'" +
+            ", created_date='" + createdDate + "'" +
             ", total='" + total + "'" +
-            ", claimed_amount='" + claimed_amount + "'" +
+            ", claimed_amount='" + claimedAmount + "'" +
             '}';
     }
 }
