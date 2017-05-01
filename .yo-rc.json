@@ -1,0 +1,27 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.6.1",
+    "baseName": "receiptManager",
+    "packageName": "com.paparising.receiptmanager",
+    "packageFolder": "com/paparising/receiptmanager",
+    "serverPort": "8080",
+    "authenticationType": "session",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "oracle",
+    "prodDatabaseType": "oracle",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "enableSocialSignIn": false,
+    "rememberMeKey": "f40b1e873eec3905c4cd5f84a009bd6d28fa60fc",
+    "useSass": false,
+    "applicationType": "monolith",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "enableTranslation": false
+  }
+}

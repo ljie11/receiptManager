@@ -1,0 +1,37 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "category",
+            "fieldType": "ReceiptCategory",
+            "fieldValues": "grocery,entertainment,homeMaintanant",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "created_by",
+            "fieldType": "Integer",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "created_date",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "total",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "claimed_amount",
+            "fieldType": "Double",
+            "fieldValidateRules": []
+        }
+    ],
+    "changelogDate": "20170501014348",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "receipt",
+    "pagination": "pager"
+}
