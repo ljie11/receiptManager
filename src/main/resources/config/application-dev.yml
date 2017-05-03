@@ -22,9 +22,9 @@ spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:oracle:thin:@localhost:1521:XE
-        name: receipt
-        username: receipt
-        password: receipt
+        name: receipt2
+        username: receipt2
+        password: receipt2
     jpa:
         database-platform: org.hibernate.dialect.Oracle10gDialect
         database: ORACLE

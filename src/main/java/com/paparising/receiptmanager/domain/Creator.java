@@ -4,11 +4,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
-import com.paparising.receiptmanager.domain.enumeration.ReceiptCategory;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -22,22 +20,34 @@ public class Creator implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category")
-    private ReceiptCategory category;
+    @Column(name = "address")
+    private String address;
 
-    @Column(name = "created_by")
-    private Integer createdBy;
+    @Column(name = "firstname")
+    private String firstName;
 
-    @Column(name = "created_date")
-    private ZonedDateTime createdDate;
+    @Column(name = "lastname")
+    private String lastName;
 
-    @Column(name = "total")
-    private String total;
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "language")
+    private String language;
 
-    @Column(name = "claimed_amount")
-    private Double claimedAmount;
+    @Column(name = "local")
+    private String local;
 
+    @Column(name = "openId")
+    private String openId;
+
+    @Column(name = "uuid")
+    private String uuid;
+    
+	@ManyToOne
+    @JsonIgnore
+    private Subscription subscription;
+    
     public Long getId() {
         return id;
     }
@@ -46,100 +56,102 @@ public class Creator implements Serializable {
         this.id = id;
     }
 
-    public ReceiptCategory getCategory() {
-        return category;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public Creator category(ReceiptCategory category) {
-        this.category = category;
-        return this;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setCategory(ReceiptCategory category) {
-        this.category = category;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public Integer getCreated_by() {
-        return createdBy;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public Creator created_by(Integer created_by) {
-        this.createdBy = created_by;
-        return this;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setCreated_by(Integer created_by) {
-        this.createdBy = created_by;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public ZonedDateTime getCreated_date() {
-        return createdDate;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public Creator created_date(ZonedDateTime created_date) {
-        this.createdDate = created_date;
-        return this;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setCreated_date(ZonedDateTime created_date) {
-        this.createdDate = created_date;
-    }
+	public String getLanguage() {
+		return language;
+	}
 
-    public String getTotal() {
-        return total;
-    }
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 
-    public Creator total(String total) {
-        this.total = total;
-        return this;
-    }
+	public String getLocal() {
+		return local;
+	}
 
-    public void setTotal(String total) {
-        this.total = total;
-    }
+	public void setLocal(String local) {
+		this.local = local;
+	}
 
-    public Double getClaimed_amount() {
-        return claimedAmount;
-    }
+	public String getOpenId() {
+		return openId;
+	}
 
-    public Creator claimed_amount(Double claimed_amount) {
-        this.claimedAmount = claimed_amount;
-        return this;
-    }
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
 
-    public void setClaimed_amount(Double claimed_amount) {
-        this.claimedAmount = claimed_amount;
-    }
+	public String getUuid() {
+		return uuid;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Creator receipt = (Creator) o;
-        if(receipt.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, receipt.id);
-    }
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
-    @Override
-    public String toString() {
-        return "Receipt{" +
-            "id=" + id +
-            ", category='" + category + "'" +
-            ", created_by='" + createdBy + "'" +
-            ", created_date='" + createdDate + "'" +
-            ", total='" + total + "'" +
-            ", claimed_amount='" + claimedAmount + "'" +
-            '}';
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Creator other = (Creator) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Creator [id=" + id + ", address=" + address + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", language=" + language + ", local=" + local + ", openId="
+				+ openId + ", uuid=" + uuid + ", subscription=" + subscription
+				+ "]";
+	}
+
 }

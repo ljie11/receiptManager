@@ -12,9 +12,9 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "marketplace")
+@Table(name = "item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Marketplace implements Serializable {
+public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,16 +22,16 @@ public class Marketplace implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "baseUrl")
-    private String baseUrl;
+    @Column(name = "quantity")
+    private String quantity;
 
-    @Column(name = "partner")
-    private String partner;
+    @Column(name = "unit")
+    private String unit;
     
-	@ManyToOne
+    @ManyToOne
     @JsonIgnore
-    private Subscription subscription;
-
+    private Order order;
+    
     public Long getId() {
         return id;
     }
@@ -40,23 +40,23 @@ public class Marketplace implements Serializable {
         this.id = id;
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
-    }
+    public String getQuantity() {
+		return quantity;
+	}
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
 
-    public String getPartner() {
-        return partner;
-    }
+	public String getUnit() {
+		return unit;
+	}
 
-    public void setPartner(String partner) {
-        this.partner = partner;
-    }
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -64,11 +64,11 @@ public class Marketplace implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Marketplace marketplace = (Marketplace) o;
-        if(marketplace.id == null || id == null) {
+        Item item = (Item) o;
+        if(item.id == null || id == null) {
             return false;
         }
-        return Objects.equals(id, marketplace.id);
+        return Objects.equals(id, item.id);
     }
 
     @Override
@@ -76,9 +76,12 @@ public class Marketplace implements Serializable {
         return Objects.hashCode(id);
     }
 
-    @Override
-    public String toString() {
-        return "Marketplace [id=" + id + ", baseUrl=" + baseUrl + ", partner=" + partner + "]";
-    }
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", quantity=" + quantity + ", unit=" + unit
+				+ "]";
+	}
+
+
 
 }

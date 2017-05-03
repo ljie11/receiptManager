@@ -3,14 +3,12 @@ package com.paparising.receiptmanager.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.iocs.portal.domain.User;
-import com.iocs.portal.domain.enumeration.AgreementStatus;
 import com.paparising.receiptmanager.domain.enumeration.SubscriptionType;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
 /**
  * A subscription.
@@ -30,12 +28,12 @@ public class Subscription implements Serializable {
     @Enumerated(EnumType.STRING)
     private SubscriptionType type;
     
-    @ManyToOne
-    private Creator creator;
-    
-    @ManyToOne
-    private Marketplace marketplace;
+    @Column(name = "uuid")
+    private String uuid;
 
+    @Column(name = "active")
+    private boolean active;
+    
     @Column(name = "created_date")
     private ZonedDateTime createdDate;
 
@@ -47,8 +45,6 @@ public class Subscription implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-
 
     public ZonedDateTime getCreated_date() {
         return createdDate;
@@ -63,32 +59,52 @@ public class Subscription implements Serializable {
         this.createdDate = created_date;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Subscription receipt = (Subscription) o;
-        if(receipt.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, receipt.id);
-    }
+    public String getUuid() {
+		return uuid;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
-    @Override
-    public String toString() {
-        return "Receipt{" +
-            "id=" + id +
-            ", created_by='" + createdBy + "'" +
-            ", created_date='" + createdDate + "'" +
-            '}';
-    }
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Subscription other = (Subscription) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Subscription [id=" + id + ", type=" + type + ", uuid=" + uuid
+				+ ", active=" + active + ", createdDate=" + createdDate + "]";
+	}
+
+
 }

@@ -3,6 +3,7 @@ package com.paparising.receiptmanager.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.paparising.receiptmanager.domain.Subscription;
 import com.paparising.receiptmanager.service.SubscriptionService;
+import com.paparising.receiptmanager.service.dto.SubscriptionResponseDTO;
 import com.paparising.receiptmanager.web.rest.util.HeaderUtil;
 import com.paparising.receiptmanager.web.rest.util.PaginationUtil;
 
@@ -24,19 +25,19 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * REST controller for managing App direct Subscriptions.
+ * REST controller for managing App direct Subscription.
  */
 @RestController
 @RequestMapping("/api")
-public class AppDirectSubscriptionResource {
+public class SubscriptionResource {
 
-    private final Logger log = LoggerFactory.getLogger(AppDirectSubscriptionResource.class);
+    private final Logger log = LoggerFactory.getLogger(SubscriptionResource.class);
         
     @Inject
     private SubscriptionService subscriptionService;
 
     /**
-     * POST  /subscriptions : Create a new receipt.
+     * POST  /subscriptions : Create a new subscription.
      *
      * @param receipt the receipt to create
      * @return the ResponseEntity with status 201 (Created) and with body the new receipt, or with status 400 (Bad Request) if the receipt has already an ID
@@ -46,15 +47,13 @@ public class AppDirectSubscriptionResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Subscription> createSubscription(@RequestBody Subscription subscription) throws URISyntaxException {
+    public ResponseEntity<SubscriptionResponseDTO> createSubscription(@RequestBody Subscription subscription) throws URISyntaxException {
         log.debug("REST request to save subscription : {}", subscription);
         if (subscription.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("subscription", "idexists", "A new subscription cannot already have an ID")).body(null);
         }
         Subscription result = subscriptionService.save(subscription);
-        return ResponseEntity.created(new URI("/api/subscriptions/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("subscription", result.getId().toString()))
-            .body(result);
+        return null;
     }
 
     /**
@@ -70,14 +69,13 @@ public class AppDirectSubscriptionResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Subscription> updatesubscription(@RequestBody Subscription subscription) throws URISyntaxException {
+    public ResponseEntity<SubscriptionResponseDTO> updatesubscription(@RequestBody Subscription subscription) throws URISyntaxException {
         log.debug("REST request to update subscription : {}", subscription);
         if (subscription.getId() == null) {
             return createSubscription(subscription);
         }
-        Subscription result = subscriptionService.save(subscription);
+        SubscriptionResponseDTO result = new SubscriptionResponseDTO();
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("subscription", subscription.getId().toString()))
             .body(result);
     }
 

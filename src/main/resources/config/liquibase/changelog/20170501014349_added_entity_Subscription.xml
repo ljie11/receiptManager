@@ -14,23 +14,182 @@
     <property name="floatType" value="float" dbms="mysql, oracle"/>
 
     <!--
-        Added the entity Subscription.
+        Added the entity Subscription and relevant entities with constraints.
     -->
     <changeSet id="20170501014349_added_entity_Subscription" author="jiel">
         <createTable tableName="subscription">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="created_by" type="integer">
-                <constraints nullable="true" />
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
-            <column name="created_date" type="timestamp">
-                <constraints nullable="true" />
+            <column name="uuid" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
-            
-            <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
+            <column name="ative" type="boolean" defaultValueBoolean="true"/>
+            <column name="created_date" type="date"/>
         </createTable>
         <dropDefaultValue tableName="subscription" columnName="created_date" columnDataType="datetime"/>
+    </changeSet>
+    
+    <changeSet id="added_entity_marketplace" author="jiel">
+        <createTable tableName="marketplace">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="url" type="varchar(300)">
+                <constraints nullable="false" />
+            </column>
+            <column name="subscription_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="added_entity_creator" author="jiel">
+        <createTable tableName="creator">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="firstname" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="lastname" type="varchar(300)">
+                <constraints nullable="false" />
+            </column>
+            <column name="email" type="varchar(300)">
+                <constraints nullable="false" />
+            </column>
+            <column name="language" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="local" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="openId" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="uuid" type="varchar(36)">
+                <constraints nullable="false" />
+            </column>
+            <column name="subscription_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="added_entity_payload" author="jiel">
+        <createTable tableName="payload">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="subscription_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="added_entity_company" author="jiel">
+        <createTable tableName="company">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="phone" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="site" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="payload_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="added_entity_order" author="jiel">
+        <createTable tableName="onlineOrder">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="edition_code" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="pricing_duration" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="payload_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="added_entity_item" author="jiel">
+        <createTable tableName="item">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="quantity" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="unit" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="order_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="added_foreign_keys" author="jiel">
+             
+        <addForeignKeyConstraint baseColumnNames="subscription_id"
+             baseTableName="marketplace"
+             constraintName="fk_marketplace_subscription_id"
+             referencedColumnNames="id"
+             referencedTableName="subscription"/>
+             
+        <addForeignKeyConstraint baseColumnNames="subscription_id"
+             baseTableName="creator"
+             constraintName="fk_creator_subscription_id"
+             referencedColumnNames="id"
+             referencedTableName="subscription"/>
         
+        <addForeignKeyConstraint baseColumnNames="subscription_id"
+             baseTableName="payload"
+             constraintName="fk_payload_subscription_id"
+             referencedColumnNames="id"
+             referencedTableName="subscription"/>
+             
+        <addForeignKeyConstraint baseColumnNames="payload_id"
+             baseTableName="onlineOrder"
+             constraintName="fk_order_payload_id"
+             referencedColumnNames="id"
+             referencedTableName="payload"/>
+             
+        <addForeignKeyConstraint baseColumnNames="payload_id"
+             baseTableName="company"
+             constraintName="fk_company_payload_id"
+             referencedColumnNames="id"
+             referencedTableName="payload"/>
+                     
+        <addForeignKeyConstraint baseColumnNames="order_id"
+             baseTableName="item"
+             constraintName="fk_item_order_id"
+             referencedColumnNames="id"
+             referencedTableName="onlineOrder"/>                     
     </changeSet>
 </databaseChangeLog>

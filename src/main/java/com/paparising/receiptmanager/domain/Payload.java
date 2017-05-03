@@ -4,12 +4,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
-import com.paparising.receiptmanager.domain.enumeration.ReceiptCategory;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "payload")
@@ -22,21 +21,12 @@ public class Payload implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category")
-    private ReceiptCategory category;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "created_by")
-    private Integer createdBy;
-
-    @Column(name = "created_date")
-    private ZonedDateTime createdDate;
-
-    @Column(name = "total")
-    private String total;
-
-    @Column(name = "claimed_amount")
-    private Double claimedAmount;
+	@ManyToOne
+    @JsonIgnore
+    private Subscription subscription;
 
     public Long getId() {
         return id;
@@ -45,72 +35,15 @@ public class Payload implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+	public String getDescription() {
+		return description;
+	}
 
-    public ReceiptCategory getCategory() {
-        return category;
-    }
-
-    public Payload category(ReceiptCategory category) {
-        this.category = category;
-        return this;
-    }
-
-    public void setCategory(ReceiptCategory category) {
-        this.category = category;
-    }
-
-    public Integer getCreated_by() {
-        return createdBy;
-    }
-
-    public Payload created_by(Integer created_by) {
-        this.createdBy = created_by;
-        return this;
-    }
-
-    public void setCreated_by(Integer created_by) {
-        this.createdBy = created_by;
-    }
-
-    public ZonedDateTime getCreated_date() {
-        return createdDate;
-    }
-
-    public Payload created_date(ZonedDateTime created_date) {
-        this.createdDate = created_date;
-        return this;
-    }
-
-    public void setCreated_date(ZonedDateTime created_date) {
-        this.createdDate = created_date;
-    }
-
-    public String getTotal() {
-        return total;
-    }
-
-    public Payload total(String total) {
-        this.total = total;
-        return this;
-    }
-
-    public void setTotal(String total) {
-        this.total = total;
-    }
-
-    public Double getClaimed_amount() {
-        return claimedAmount;
-    }
-
-    public Payload claimed_amount(Double claimed_amount) {
-        this.claimedAmount = claimed_amount;
-        return this;
-    }
-
-    public void setClaimed_amount(Double claimed_amount) {
-        this.claimedAmount = claimed_amount;
-    }
-
+	public void setDescription(String description) {
+		this.description = description;
+	}
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -131,15 +64,10 @@ public class Payload implements Serializable {
         return Objects.hashCode(id);
     }
 
-    @Override
-    public String toString() {
-        return "Receipt{" +
-            "id=" + id +
-            ", category='" + category + "'" +
-            ", created_by='" + createdBy + "'" +
-            ", created_date='" + createdDate + "'" +
-            ", total='" + total + "'" +
-            ", claimed_amount='" + claimedAmount + "'" +
-            '}';
-    }
+	@Override
+	public String toString() {
+		return "Payload [id=" + id + ", description=" + description
+				+ ", subscription=" + subscription + "]";
+	}
+
 }

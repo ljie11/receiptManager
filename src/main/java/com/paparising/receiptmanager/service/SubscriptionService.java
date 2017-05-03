@@ -1,6 +1,11 @@
 package com.paparising.receiptmanager.service;
 
 import com.paparising.receiptmanager.domain.Subscription;
+import com.paparising.receiptmanager.repository.CompanyRepository;
+import com.paparising.receiptmanager.repository.ItemRepository;
+import com.paparising.receiptmanager.repository.MarketplaceRepository;
+import com.paparising.receiptmanager.repository.OrderRepository;
+import com.paparising.receiptmanager.repository.PayloadRepository;
 import com.paparising.receiptmanager.repository.SubscriptionRepository;
 
 import org.slf4j.Logger;
@@ -23,6 +28,16 @@ public class SubscriptionService {
     
     @Inject
     private SubscriptionRepository subscriptionRepository;
+    @Inject
+    private OrderRepository orderRepository;
+    @Inject
+    private CompanyRepository companyRepository;
+    @Inject
+    private PayloadRepository payloadRepository;
+    @Inject
+    private MarketplaceRepository marketplaceRepository;
+    @Inject
+    private ItemRepository itemRepository;
 
     /**
      * Save a subscription.
