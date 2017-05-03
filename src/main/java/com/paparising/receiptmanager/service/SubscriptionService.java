@@ -1,21 +1,21 @@
 package com.paparising.receiptmanager.service;
 
-import com.paparising.receiptmanager.domain.Subscription;
-import com.paparising.receiptmanager.repository.CompanyRepository;
-import com.paparising.receiptmanager.repository.ItemRepository;
-import com.paparising.receiptmanager.repository.MarketplaceRepository;
-import com.paparising.receiptmanager.repository.OrderRepository;
-import com.paparising.receiptmanager.repository.PayloadRepository;
-import com.paparising.receiptmanager.repository.SubscriptionRepository;
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
+import com.paparising.receiptmanager.domain.Subscription;
+import com.paparising.receiptmanager.repository.CreatorRepository;
+import com.paparising.receiptmanager.repository.PayloadRepository;
+import com.paparising.receiptmanager.repository.SubscriptionRepository;
+import com.paparising.receiptmanager.service.dto.SubscriptionDTO;
 
 /**
  * Service Implementation for managing subscription.
@@ -29,61 +29,64 @@ public class SubscriptionService {
     @Inject
     private SubscriptionRepository subscriptionRepository;
     @Inject
-    private OrderRepository orderRepository;
-    @Inject
-    private CompanyRepository companyRepository;
+    private CreatorRepository creatorRepository;
     @Inject
     private PayloadRepository payloadRepository;
-    @Inject
-    private MarketplaceRepository marketplaceRepository;
-    @Inject
-    private ItemRepository itemRepository;
-
+    
     /**
-     * Save a subscription.
-     *
-     * @param subscription the entity to save
-     * @return the persisted entity
+     * create a subscription with give info
+     * @param subscriptionStr
+     * @return
      */
-    public Subscription save(Subscription subscription) {
-        log.debug("Request to save subscription : {}", subscription);
-        Subscription result = subscriptionRepository.save(subscription);
-        return result;
+    public String createSubscription(String subscriptionStr) {
+        String identityStr = "";
+        
+        try {
+            SubscriptionDTO dto = SubscriptionDTO.fromJsonString(subscriptionStr);
+            payloadRepository.save(dto.getPayload());
+            creatorRepository.save(dto.getCreator());
+            
+            Subscription subscription = new Subscription();
+            subscription.setActive(true);
+            subscription.setCreated_date(ZonedDateTime.now());
+            String uuid = UUID.randomUUID().toString();
+            subscription.setUuid(uuid);
+            subscriptionRepository.save(subscription);
+            identityStr = uuid;
+            
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return identityStr;
+        }
+        return identityStr;
     }
-
+    
     /**
-     *  Get all the subscriptions.
-     *  
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * 
+     * @param subscriptionStr
+     * @return
      */
-    @Transactional(readOnly = true) 
-    public Page<Subscription> findAll(Pageable pageable) {
-        log.debug("Request to get all subscriptions");
-        Page<Subscription> result = subscriptionRepository.findAll(pageable);
-        return result;
+    public String cancelSubscription(String subscriptionStr) {
+        String identityStr = "";
+        
+        try {
+            SubscriptionDTO dto = SubscriptionDTO.fromJsonString(subscriptionStr);
+            payloadRepository.save(dto.getPayload());
+            creatorRepository.save(dto.getCreator());
+            
+            Subscription subscription = new Subscription();
+            subscription.setActive(true);
+            subscription.setCreated_date(ZonedDateTime.now());
+            String uuid = UUID.randomUUID().toString();
+            subscription.setUuid(uuid);
+            subscriptionRepository.save(subscription);
+            identityStr = uuid;
+            
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return identityStr;
+        }
+        return identityStr;
     }
-
-    /**
-     *  Get one subscription by id.
-     *
-     *  @param id the id of the entity
-     *  @return the entity
-     */
-    @Transactional(readOnly = true) 
-    public Subscription findOne(Long id) {
-        log.debug("Request to get subscription : {}", id);
-        Subscription subscription = subscriptionRepository.findOne(id);
-        return subscription;
-    }
-
-    /**
-     *  Delete the  subscription by id.
-     *
-     *  @param id the id of the entity
-     */
-    public void delete(Long id) {
-        log.debug("Request to delete subscription : {}", id);
-        subscriptionRepository.delete(id);
-    }
+    
 }

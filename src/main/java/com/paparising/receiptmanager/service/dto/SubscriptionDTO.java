@@ -1,35 +1,26 @@
 package com.paparising.receiptmanager.service.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import java.io.IOException;
+
 import javax.validation.constraints.Size;
 
-import com.paparising.receiptmanager.config.Constants;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.paparising.receiptmanager.domain.Creator;
 import com.paparising.receiptmanager.domain.Marketplace;
 import com.paparising.receiptmanager.domain.Payload;
 
 public class SubscriptionDTO {
 
-    @NotNull
-    @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     private String type;
-    
-    @NotNull
     private Marketplace marketplace;
-    
-    @NotNull
     private Creator creator;
-    
-    @NotNull
     private Payload payload;
-
 
     public SubscriptionDTO() {
     }
-
-
+    
 	public SubscriptionDTO(String type, Marketplace marketplace,
 			Creator creator, Payload payload) {
 		super();
@@ -37,7 +28,53 @@ public class SubscriptionDTO {
 		this.marketplace = marketplace;
 		this.creator = creator;
 		this.payload = payload;
-	}@Override
+	}
+	
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Marketplace getMarketplace() {
+        return marketplace;
+    }
+
+    public void setMarketplace(Marketplace marketplace) {
+        this.marketplace = marketplace;
+    }
+
+    public Creator getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Creator creator) {
+        this.creator = creator;
+    }
+
+    public Payload getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Payload payload) {
+        this.payload = payload;
+    }
+
+    public static SubscriptionDTO fromJsonString(String jsonString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+
+        module.addDeserializer(SubscriptionDTO.class, new SubscriptionDtoDeserializer());
+        mapper.registerModule(module);
+
+        SubscriptionDTO dto =  mapper.readValue(jsonString, SubscriptionDTO.class);
+
+        return dto;
+    }
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

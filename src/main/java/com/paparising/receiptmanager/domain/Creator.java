@@ -47,7 +47,20 @@ public class Creator implements Serializable {
 	@ManyToOne
     @JsonIgnore
     private Subscription subscription;
-    
+	
+    public Creator(String address, String firstName, String lastName, String email, String language,
+            String local, String openId, String uuid) {
+        super();
+        this.address = address;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.language = language;
+        this.local = local;
+        this.openId = openId;
+        this.uuid = uuid;
+    }
+
     public Long getId() {
         return id;
     }
